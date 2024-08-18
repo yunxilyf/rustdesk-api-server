@@ -1,6 +1,5 @@
 # rustdesk-api-server
 
-## 请使用客户端最新版本1.2.3
 
 [The English explanation is available by clicking here.](https://github.com/kingmo888/rustdesk-api-server/blob/master/README_EN.md)
 
@@ -15,7 +14,28 @@
     <img src ="https://img.shields.io/badge/Docker-arm|arm64|amd64-blue.svg" />
 </p>
 
-![主页面](images/front_main.png) 
+# 1.2.3版本与1.2.6+版本区别
+> rustdesk官方在其新版服务端中已[强制要求key](https://rustdesk.com/docs/zh-cn/self-host/rustdesk-server-oss/install/#key)(rustdesk-server版本号大概>=1.1.10)
+
+- rustdesk版本<=1.2.3, 服务端请配合使用rustdesk-server<=1.1.10
+  - 根据自身需要来选择是否配置服务端的key参数。
+- rustdesk版本>1.2.3, 服务端请配合使用rustdesk-server>=1.1.11
+  - 当使用rustdesk-server自动生成的key时，会出现链接缓慢甚至链接超时。
+  - 解决办法：使用自定义k——配置rustdesk-server时，传入k参数来自定义key值，同时客户端同步配置相同的key，即可秒连。
+
+  - rustdesk-server的dock-compose配置参考：
+
+  ![demo](images/compose_demo.png)
+
+`key是保证别人不能在知道你中继服务器的IP后，利用你的IP做中继。如果不配置key，就做好中继IP的保密工作，不要泄露给其他人。
+而只要服务端配置了密钥，无论是随机生成（生成后本身就固定了），还是自定义的，如果控制客户端不配置对应key就无法控制其他机器（被控机器可以不填key）`
+
+对于自定义key是否生效，请看rustdesk server中`hbbs`的日志：
+![demo](images/key_activate.png)
+
+## 展示
+
+![主页面](images/front_main.png)
 
 ## 功能特点
 
@@ -169,7 +189,7 @@ services:
 - 后台操作登录或登出时：CSRF验证失败. 请求被中断.
 
   这种操作大概率是docker配置+nginx反代+SSL的组合，要注意修改CSRF_TRUSTED_ORIGINS，如果是ssl那就是https开头，否则就是http。
-  
+
 - Mysql版本要求
 
   如果你使用的是Mysql数据库，需要注意django4.x版本需要Mysql8.0，如果要使用mysql5.8则需要将django版本降至3.2。
@@ -184,7 +204,7 @@ services:
 - [x] 集成Web客户端形式（v1.4+）
 
   > 将大神的web客户端集成进来，已集成。 [来源](https://www.52pojie.cn/thread-1708319-1-1.html)
-  
+
 - [x] 对过期（不在线）设备的过滤，用以区分在线&离线设备(1.4.7)
 
   > 通过配置方式，对过期超过指定时间的设备清理或过滤。
@@ -199,6 +219,11 @@ services:
 
 - [x] 支持mysql及sqlite3迁移mysql(1.4.8)。
 
+- [-] 用户前端修改密码。
+
+- [-] 前端改造，所有页面自适应，前后端分离(计划V2)。
+
+
 ## 其他相关工具
 
 - [可以修改客户端ID的CMD脚本](https://github.com/abdullah-erturk/RustDesk-ID-Changer)
@@ -209,3 +234,8 @@ services:
 
 ## Stargazers over time
 [![Stargazers over time](https://starchart.cc/kingmo888/rustdesk-api-server.svg?variant=adaptive)](https://starchart.cc/kingmo888/rustdesk-api-server)
+
+
+## 联络我
+
+![wechat](images/wechat.png)
